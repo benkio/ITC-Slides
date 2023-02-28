@@ -25,7 +25,7 @@ https://serokell.io/blog/what-is-nix
 https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html
 
 ** Your System as Purely Functional Code
-** Reproducibility
+** Reproducibility & Rollbacks
 ** Multiple versions of any package
 
 * Drawbacks
@@ -51,6 +51,8 @@ https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html
   - [[https://nix-community.github.io/home-manager/][Home Manager Manual]]
   - [[https://nix-community.github.io/home-manager/options.html][Home Manager Appendix]]
   - [[https://github.com/LnL7/nix-darwin][nix-darwin Repo]]
+  - [[https://benkio.github.io/articles/2021-01-29-NixMigration.html][My Experience With Nix #1]]
+  - [[https://benkio.github.io/articles/2021-02-04-NixOs.html][My Experience With Nix #2]]
 
 ** Videos
   - [[https://www.youtube.com/watch?v=eW8KU6h_ZNo][Xebia Functional Nix Introduction #1]]
