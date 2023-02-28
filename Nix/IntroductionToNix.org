@@ -1,0 +1,63 @@
+#+Title: Introduction to Nix
+#+Author: Enrico Benini
+#+Email: benkio89@gmail.com
+#+REVEAL_INIT_OPTIONS: width:1200, height:800, margin: 0.1, minScale:0.2, maxScale:2.5, transition:'cube'
+#+OPTIONS: toc:nil timestamp:nil email:t num:nil
+#+REVEAL_THEME: blood
+#+REVEAL_HLEVEL: 2
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Introduction to Nix">
+#+REVEAL_POSTAMBLE: <p> Created by benkio. </p>
+#+REVEAL_PLUGINS: (markdown notes)
+#+REVEAL_HLEVEL: 1
+
+* What is Nix?
+
+ - Functional Language
+ - Package Manager
+ - Operating System
+
+* Why Should I Used It?
+
+
+* Benefits
+
+https://serokell.io/blog/what-is-nix
+https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html
+
+** Your System as Purely Functional Code
+** Reproducibility
+** Multiple versions of any package
+
+* Drawbacks
+
+** Space Usage
+** No Hacks
+** Mostly for Nerds - Learning Curve
+
+* Nix Language
+
+* NixOs & Nix-Darwin
+
+* Home-Manager
+
+* Demo: Brief Walkthrough My Configuration
+
+* References
+
+** Wiki and Manuals
+
+  - [[https://nixos.wiki/wiki/Main_Page][NixOs Wiki]]
+  - [[https://nixos.org/learn.html][NixOs Learn Section]]
+  - [[https://nix-community.github.io/home-manager/][Home Manager Manual]]
+  - [[https://nix-community.github.io/home-manager/options.html][Home Manager Appendix]]
+  - [[https://github.com/LnL7/nix-darwin][nix-darwin Repo]]
+
+** Videos
+  - [[https://www.youtube.com/watch?v=eW8KU6h_ZNo][Xebia Functional Nix Introduction #1]]
+  - [[https://www.youtube.com/watch?v=494zlooD7Tg][Xebia Functional Nix Introduction #2]]
+  - [[https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs][Nixology Video Playlist]]
+  - [[https://www.youtube.com/live/zp51NecZ4GI][DevInsideYou Live: Home Manager Setup #1]]
+  - [[https://www.youtube.com/live/4q6i6N8wsXM][DevInsideYou Live: Home Manager Setup #2]]
+  - [[https://www.youtube.com/playlist?list=PLyzwHTVJlRc8yjlx4VR4LU5A5O44og9in][The Nix Hour Video Series]]
+
+* Thank You 💜
