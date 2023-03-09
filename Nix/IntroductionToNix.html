@@ -11,7 +11,7 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.css"/>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/theme/blood.css" id="theme"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/theme/moon.css" id="theme"/>
 
 
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
@@ -34,93 +34,332 @@
 </section>
 
 <section>
-<section id="slide-org938979f">
-<h2 id="org938979f">What is Nix?</h2>
+<section id="slide-org0a5f3f7">
+<h2 id="org0a5f3f7">What is Nix?</h2>
 <ul>
 <li>Functional Language</li>
 <li>Package Manager</li>
-<li>Operating System</li>
+<li>Home Manager (<code>Home-Manager</code>)</li>
+<li>Operating System (<code>NixOs</code>)</li>
 
 </ul>
 
 </section>
 </section>
 <section>
-<section id="slide-org8817dc1">
-<h2 id="org8817dc1">Why Should I Used It?</h2>
-
+<section id="slide-orgabd09b3">
+<h2 id="orgabd09b3">Why Should I Used It?</h2>
 
 </section>
 </section>
 <section>
-<section id="slide-org5420e5a">
-<h2 id="org5420e5a">Benefits</h2>
+<section id="slide-orge2b9df5">
+<h2 id="orge2b9df5">Benefits</h2>
 <p>
 <a href="https://serokell.io/blog/what-is-nix">https://serokell.io/blog/what-is-nix</a>
 <a href="https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html">https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html</a>
 </p>
+</section>
+<section id="slide-org05d6358">
+<h3 id="org05d6358">Everything is Immutable</h3>
+<p>
+Each packages will be stored in <code>/nix/store</code> as a folder named
+<code>&lt;package-hash&gt;-&lt;package-name&gt;-&lt;package-version&gt;</code>
+</p>
+
+<p>
+<b>NO DEPENDENCY HELL</b> since each package will depend on other packages
+with their own hash.
+</p>
+
+<p>
+If anything changes, the hash will be different, and therefore the
+package.
+</p>
+
+<p>
+Each package will be then linked together and to the user path by
+symlinks managed by nix.
+</p>
 
 </section>
-<section id="slide-org20a6310">
-<h3 id="org20a6310">Your System as Purely Functional Code</h3>
+<section id="slide-orgb52d23e">
+<h4 id="orgb52d23e"><i>nix/store</i></h4>
+<p>
+View of my current `/nix/store`.
+</p>
+
+<p>
+Right now it holds 7000+ files/folders
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-bash"   ><code trim>.links
+0041hqlbdn344ydjnza10mjm7rlkf4sg-clang-11-12-LLVMgold-path.patch.drv
+008k6r0ybrvwqnvpg7c0893a637f5hcn-mptrees.r60929.tar.xz.drv
+00ar9198921br3ypc8a69dv32rn66x0p-source.drv
+00c1bhj9wmzs7xirc33hclqwd6inmb9h-perl-5.32.1.tar.gz.drv
+00lfhlzh45srr48lpifc19x45hj1gvj2-thumbpdf.r48625.tar.xz.drv
+00m3n0xbkvjr1q7f9iw0s0igglr2cngq-cctools-port-949.0.1.drv
+0132jk5wc1i074hj8hsv2dq4qmjzvjgn-libthai-0.1.29
+016c349l8pl2gix5h2qvriz0aiwlfcnw-libtool-2.4.6.drv
+01k5097b5f9lzdw79s4g796ba37dbnkr-filelock-3.6.0.tar.gz.drv
+01njla39mkimsnnh7xwxh2mxfmjikz0r-python3.9-pyopenssl-22.0.
+...
+</code></pre>
+</div>
+
 </section>
-<section id="slide-org3df0213">
-<h3 id="org3df0213">Reproducibility &amp; Rollbacks</h3>
+<section id="slide-org7a1c73e">
+<h4 id="org7a1c73e">Cached Packages</h4>
+<p>
+If someone already built the package you need, nix will directly
+download the binaries from its cache: <code>https://cache.nix.org</code>
+</p>
+
+<p>
+Only if it doesn't exists there, the source code is actually
+downloaded and built on your machine.
+</p>
+
 </section>
-<section id="slide-org529ed81">
-<h3 id="org529ed81">Multiple versions of any package</h3>
+<section id="slide-orgd244aaa">
+<h3 id="orgd244aaa">Your System as Purely Functional Code</h3>
+<p>
+Every aspect of your system is defined using the nix language.
+</p>
+
+<p>
+Plus, this includes:
+</p>
+<ul>
+<li>Define installed packages</li>
+<li>Packages Configurations</li>
+<li>Define your own package</li>
+<li>Much more</li>
+
+</ul>
+
+<p>
+Moreover, it is easy to share, test &amp; get support.
+</p>
+
+</section>
+<section id="slide-org89a2c51">
+<h3 id="org89a2c51">Reproducibility &amp; Rollbacks</h3>
+<p>
+Due to its Immutability, the system state will be easy to reproduce
+or perform a rollback.
+</p>
+
+<p>
+Same hashes, same system.
+</p>
+
+<p>
+<code>nix</code> just have to rebuild what is missing and properly link
+everything back together.
+</p>
+
+</section>
+<section id="slide-org53a393a">
+<h4 id="org53a393a">No Upgrades or Downgrades</h4>
+<p>
+You just switch to a new system.
+</p>
+
+</section>
+<section id="slide-org4fb5477">
+<h3 id="org4fb5477">Multiple versions of any package</h3>
+<p>
+It's possible to achive this on other systems/package
+managers, but it's usually quite tedious to
+manage.
+</p>
+
+<p>
+Eg. <code>virtualenv</code>, <code>docker</code>, <code>jhbuild</code>&#x2026;
+</p>
+
+<p>
+With <code>nix</code> it's very easy, see first benefit
+</p>
+
+</section>
+<section id="slide-orgcd4a1db">
+<h3 id="orgcd4a1db">"On the fly" Disposable Environment (<code>Nix-shell</code>)</h3>
+<p>
+Discussed a little bit more later
+</p>
 
 </section>
 </section>
 <section>
-<section id="slide-orgb138ee7">
-<h2 id="orgb138ee7">Drawbacks</h2>
-<div class="outline-text-2" id="text-orgb138ee7">
+<section id="slide-org5731848">
+<h2 id="org5731848">Drawbacks</h2>
+<div class="outline-text-2" id="text-org5731848">
 </div>
 </section>
-<section id="slide-org32621a9">
-<h3 id="org32621a9">Space Usage</h3>
+<section id="slide-org6c087d9">
+<h3 id="org6c087d9">Space Usage</h3>
 </section>
-<section id="slide-orgbc64fa5">
-<h3 id="orgbc64fa5">No Hacks</h3>
+<section id="slide-org1d73b33">
+<h3 id="org1d73b33">Runtime/Dynamic Composition</h3>
+<p>
+From the Nix Wiki:
+</p>
+
+<p>
+<code>It however currently falls short when working with dynamic composition at runtime or replacing low level libraries, due to the need to rebuild dependencies.</code>
+</p>
+
 </section>
-<section id="slide-org3308420">
-<h3 id="org3308420">Mostly for Nerds - Learning Curve</h3>
+<section id="slide-org0c6ca34">
+<h3 id="org0c6ca34">No Hacks</h3>
+<p>
+Everything is immutable so you have to pass through nix if you want to change something on the fly. or nix-shell / env
+</p>
+</section>
+<section id="slide-org7916401">
+<h3 id="org7916401">Mostly for Nerds - Learning Curve</h3>
+<p>
+Hard to get into, you have to learn something new entirely
+</p>
 
 </section>
 </section>
 <section>
-<section id="slide-org0e8a622">
-<h2 id="org0e8a622">Nix Language</h2>
+<section id="slide-org99254c3">
+<h2 id="org99254c3">Nix Language</h2>
+</section>
+</section>
+<section>
+<section id="slide-org23dd350">
+<h2 id="org23dd350">Nix Channels/Repositories</h2>
+<p>
+Where nix looks for packages.
+</p>
+
+<p>
+You can have several channels from several sources.
+</p>
+
+<p>
+Default channel also splits into stable and unstable. 
+</p>
+
+<p>
+Very similar to git remote.
+</p>
 
 </section>
 </section>
 <section>
-<section id="slide-org06275f0">
-<h2 id="org06275f0">NixOs &amp; Nix-Darwin</h2>
+<section id="slide-org26d524f">
+<h2 id="org26d524f">Nix-Shell</h2>
+<p>
+Useful to declare project dependencies that will not be permanently
+installed in your system.
+</p>
 
+<p>
+Very much like <code>direnv</code>, but for software.
+</p>
+
+<p>
+Used by projects like the <code>cats</code> library or 47deg's site.
+</p>
+
+</section>
+<section id="slide-org52de972">
+<h3 id="org52de972">How to set it Up</h3>
+<ul>
+<li>Define a file called <code>shell.nix</code> in the root of your project
+containing everything required by it.</li>
+<li>Enter the shell with the command <code>nix-shell</code></li>
+<li>Enjoy</li>
+
+</ul>
+
+</section>
+<section id="slide-org2c0eb2b">
+<h3 id="org2c0eb2b">nix-shell.nix Example</h3>
+<div class="org-src-container">
+
+<pre  class="src src-nix"   ><code trim><span style="color: #a020f0;">let</span>
+  <span style="color: #a0522d;">nixpkgs</span> = builtins.fetchTarball <span style="color: #8b2252;">"channel:nixos-22.05"</span>;
+  <span style="color: #a0522d;">pkgs</span> = <span style="color: #483d8b;">import</span> nixpkgs { <span style="color: #a0522d;">config</span> = { }; <span style="color: #a0522d;">overlays</span> = [ ]; };
+<span style="color: #a020f0;">in</span>
+  pkgs.stdenv.mkDerivation {
+    <span style="color: #a0522d;">name</span> = <span style="color: #8b2252;">"47-deg-site-dev"</span>;
+    <span style="color: #a0522d;">buildInputs</span> = [
+      (pkgs.jekyll.override  { <span style="color: #a0522d;">ruby</span> = pkgs.ruby_3_1; })
+      (pkgs.bundler.override { <span style="color: #a0522d;">ruby</span> = pkgs.ruby_3_1; })
+      pkgs.ruby_3_1
+      pkgs.git
+      pkgs.graphicsmagick
+    ];
+  }
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orge5e25df">
+<h3 id="orge5e25df">Templates</h3>
+<p>
+Online you can find templates to leverage the power of <code>nix-shell</code>.
+For instance, we can also define CI/CD pipelines in the same way!
+</p>
 </section>
 </section>
 <section>
-<section id="slide-orgdd382c7">
-<h2 id="orgdd382c7">Home-Manager</h2>
-
-</section>
-</section>
-<section>
-<section id="slide-org9eed033">
-<h2 id="org9eed033">Demo: Brief Walkthrough My Configuration</h2>
-
-</section>
-</section>
-<section>
-<section id="slide-orga2be437">
-<h2 id="orga2be437">References</h2>
-<div class="outline-text-2" id="text-orga2be437">
+<section id="slide-org271d1e6">
+<h2 id="org271d1e6">NixOs &amp; Nix-Darwin</h2>
+<div class="outline-text-2" id="text-org271d1e6">
 </div>
 </section>
-<section id="slide-org890b5db">
-<h3 id="org890b5db">Wiki and Manuals</h3>
+<section id="slide-org3b37331">
+<h3 id="org3b37331">Generations</h3>
+<p>
+This concept holds for <code>home-manager</code> as well.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org5115b4b">
+<h2 id="org5115b4b">Home-Manager</h2>
+<p>
+TLDR; managing your home with nix
+</p>
+
+<p>
+It includes dot-files as well as user scoped packages
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orge687431">
+<h2 id="orge687431">Demo: Brief Walkthrough My Configuration</h2>
+
+</section>
+</section>
+<section>
+<section id="slide-org3ca00c3">
+<h2 id="org3ca00c3">Extra: Nix Flakes</h2>
+
+</section>
+</section>
+<section>
+<section id="slide-org2a9a14c">
+<h2 id="org2a9a14c">References</h2>
+<div class="outline-text-2" id="text-org2a9a14c">
+</div>
+</section>
+<section id="slide-org4d1d808">
+<h3 id="org4d1d808">Wiki, Articles and Manuals</h3>
 <ul>
 <li><a href="https://nixos.wiki/wiki/Main_Page">NixOs Wiki</a></li>
 <li><a href="https://nixos.org/learn.html">NixOs Learn Section</a></li>
@@ -133,8 +372,8 @@
 </ul>
 
 </section>
-<section id="slide-org23fa979">
-<h3 id="org23fa979">Videos</h3>
+<section id="slide-org9f8e926">
+<h3 id="org9f8e926">Videos</h3>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=eW8KU6h_ZNo">Xebia Functional Nix Introduction #1</a></li>
 <li><a href="https://www.youtube.com/watch?v=494zlooD7Tg">Xebia Functional Nix Introduction #2</a></li>
@@ -148,8 +387,8 @@
 </section>
 </section>
 <section>
-<section id="slide-org04838a2">
-<h2 id="org04838a2">Thank You 💜</h2>
+<section id="slide-org7631002">
+<h2 id="org7631002">Thank You 💜</h2>
 </section>
 </section>
 </div>

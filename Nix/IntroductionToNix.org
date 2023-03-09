@@ -3,8 +3,6 @@
 #+Email: benkio89@gmail.com
 #+REVEAL_INIT_OPTIONS: width:1200, height:800, margin: 0.1, minScale:0.2, maxScale:2.5, transition:'cube'
 #+OPTIONS: toc:nil timestamp:nil email:t num:nil
-#+REVEAL_THEME: blood
-#+REVEAL_HLEVEL: 2
 #+REVEAL_HEAD_PREAMBLE: <meta name="description" content="Introduction to Nix">
 #+REVEAL_POSTAMBLE: <p> Created by benkio. </p>
 #+REVEAL_PLUGINS: (markdown notes)
@@ -14,37 +12,181 @@
 
  - Functional Language
  - Package Manager
- - Operating System
+ - Home Manager (~Home-Manager~)
+ - Operating System (~NixOs~)
 
 * Why Should I Used It?
-
 
 * Benefits
 
 https://serokell.io/blog/what-is-nix
 https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html
+** Everything is Immutable
+
+  Each packages will be stored in ~/nix/store~ as a folder named
+  ~<package-hash>-<package-name>-<package-version>~
+
+  *NO DEPENDENCY HELL* since each package will depend on other packages
+  with their own hash.
+
+  If anything changes, the hash will be different, and therefore the
+  package.
+
+  Each package will be then linked together and to the user path by
+  symlinks managed by nix.
+
+*** /nix/store/
+
+  View of my current `/nix/store`.
+
+  Right now it holds 7000+ files/folders
+
+#+begin_src bash
+  .links
+  0041hqlbdn344ydjnza10mjm7rlkf4sg-clang-11-12-LLVMgold-path.patch.drv
+  008k6r0ybrvwqnvpg7c0893a637f5hcn-mptrees.r60929.tar.xz.drv
+  00ar9198921br3ypc8a69dv32rn66x0p-source.drv
+  00c1bhj9wmzs7xirc33hclqwd6inmb9h-perl-5.32.1.tar.gz.drv
+  00lfhlzh45srr48lpifc19x45hj1gvj2-thumbpdf.r48625.tar.xz.drv
+  00m3n0xbkvjr1q7f9iw0s0igglr2cngq-cctools-port-949.0.1.drv
+  0132jk5wc1i074hj8hsv2dq4qmjzvjgn-libthai-0.1.29
+  016c349l8pl2gix5h2qvriz0aiwlfcnw-libtool-2.4.6.drv
+  01k5097b5f9lzdw79s4g796ba37dbnkr-filelock-3.6.0.tar.gz.drv
+  01njla39mkimsnnh7xwxh2mxfmjikz0r-python3.9-pyopenssl-22.0.
+  ...
+#+end_src
+
+*** Cached Packages
+
+  If someone already built the package you need, nix will directly
+  download the binaries from its cache: ~https://cache.nix.org~
+
+  Only if it doesn't exists there, the source code is actually
+  downloaded and built on your machine.
 
 ** Your System as Purely Functional Code
+
+  Every aspect of your system is defined using the nix language.
+
+  Plus, this includes:
+  - Define installed packages
+  - Packages Configurations
+  - Define your own package
+  - Much more
+
+  Moreover, it is easy to share, test & get support.
+
 ** Reproducibility & Rollbacks
+
+  Due to its Immutability, the system state will be easy to reproduce
+  or perform a rollback.
+
+  Same hashes, same system.
+
+  ~nix~ just have to rebuild what is missing and properly link
+  everything back together.
+
+*** No Upgrades or Downgrades
+
+  You just switch to a new system.
+
 ** Multiple versions of any package
+
+  It's possible to achive this on other systems/package
+  managers, but it's usually quite tedious to
+  manage.
+
+  Eg. ~virtualenv~, ~docker~, ~jhbuild~...
+
+  With ~nix~ it's very easy, see first benefit
+
+** "On the fly" Disposable Environment (~Nix-shell~)
+
+  Discussed a little bit more later
 
 * Drawbacks
 
 ** Space Usage
+** Runtime/Dynamic Composition
+
+  From the Nix Wiki:
+
+  ~It however currently falls short when working with dynamic composition at runtime or replacing low level libraries, due to the need to rebuild dependencies.~
+
 ** No Hacks
+Everything is immutable so you have to pass through nix if you want to change something on the fly. or nix-shell / env
 ** Mostly for Nerds - Learning Curve
+Hard to get into, you have to learn something new entirely
 
 * Nix Language
+* Nix Channels/Repositories
 
+  Where nix looks for packages.
+
+  You can have several channels from several sources.
+
+  Default channel also splits into stable and unstable. 
+
+  Very similar to git remote.
+
+* Nix-Shell
+
+  Useful to declare project dependencies that will not be permanently
+  installed in your system.
+
+  Very much like ~direnv~, but for software.
+
+  Used by projects like the ~cats~ library or 47deg's site.
+
+** How to set it Up
+
+  - Define a file called ~shell.nix~ in the root of your project
+    containing everything required by it.
+  - Enter the shell with the command ~nix-shell~
+  - Enjoy
+
+** nix-shell.nix Example
+
+#+begin_src nix
+let
+  nixpkgs = builtins.fetchTarball "channel:nixos-22.05";
+  pkgs = import nixpkgs { config = { }; overlays = [ ]; };
+in
+  pkgs.stdenv.mkDerivation {
+    name = "47-deg-site-dev";
+    buildInputs = [
+      (pkgs.jekyll.override  { ruby = pkgs.ruby_3_1; })
+      (pkgs.bundler.override { ruby = pkgs.ruby_3_1; })
+      pkgs.ruby_3_1
+      pkgs.git
+      pkgs.graphicsmagick
+    ];
+  }
+#+end_src
+
+** Templates
+
+  Online you can find templates to leverage the power of ~nix-shell~.
+  For instance, we can also define CI/CD pipelines in the same way!
 * NixOs & Nix-Darwin
+
+** Generations
+
+  This concept holds for ~home-manager~ as well.
 
 * Home-Manager
 
+  TLDR; managing your home with nix
+
+  It includes dot-files, configurations as well as user scoped packages
+
 * Demo: Brief Walkthrough My Configuration
+
+* Extra: Nix Flakes
 
 * References
 
-** Wiki and Manuals
+** Wiki, Articles and Manuals
 
   - [[https://nixos.wiki/wiki/Main_Page][NixOs Wiki]]
   - [[https://nixos.org/learn.html][NixOs Learn Section]]
