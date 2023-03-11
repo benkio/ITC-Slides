@@ -107,6 +107,13 @@ https://nixos.org/guides/nix-pills/why-you-should-give-it-a-try.html
 * Drawbacks
 
 ** Space Usage
+
+#+begin_src bash
+[benkio@nixos:~/nix-config]$ sudo du -sh /nix/store/
+54G	/nix/store/
+#+end_src
+
+
 ** Runtime/Dynamic Composition
 
   From the Nix Wiki:
