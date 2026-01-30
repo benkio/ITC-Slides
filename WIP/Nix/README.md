@@ -8,4 +8,5 @@
 - If you set up your channels wrong you are screwed
 - chatGPT for the rescue
 - Add Git Guardian to check for secrets and use PRs
+- limit the amount of cores an jobs or your system dies
 - (Optional) `update` command to make the changes easier
